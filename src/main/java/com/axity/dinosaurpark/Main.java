@@ -15,6 +15,6 @@ public class Main {
         dbService.appendEvent("INFO", "Sistema base inicializado con éxito.");
         dbService.appendRevenue(new BigDecimal("150.50"), "Pago de entrada estacionamiento");
         
-        System.out.println("¡Proceso completado!");
+        System.out.println("Proceso completo");
     }
 }
