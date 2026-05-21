@@ -1,0 +1,17 @@
+# Compilados de Maven
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Archivos de configuración de VS Code
+.settings/
+.project
+.classpath
+.factorypath
+.vscode/
+
+# Historiales y logs del sistema
+*.log
+.DS_Store
