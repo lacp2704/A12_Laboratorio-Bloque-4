@@ -4,6 +4,8 @@ import com.axity.dinosaurpark.model.Dinosaur;
 import com.axity.dinosaurpark.model.Vehicle;
 import com.axity.dinosaurpark.model.Worker;
 import com.axity.dinosaurpark.persistence.DatabaseService;
+import com.axity.dinosaurpark.zone.ParkZone;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,8 @@ public class ParkState {
     private final List<Vehicle> fleet;
     private final List<Dinosaur> dinosaurs;
     private final List<Worker> workers;
-    private final List<String> activeEventsInStep; // Eventos definidos 
+    private final List<String> activeEventsInStep;
+    private final List<ParkZone> zones = new ArrayList<>();
     
     private final DatabaseService databaseService;
 
@@ -73,5 +76,6 @@ public class ParkState {
     public List<Dinosaur> getDinosaurs() { return dinosaurs; }
     public List<Worker> getWorkers() { return workers; }
     public List<String> getActiveEventsInStep() { return activeEventsInStep; }
+    public List<ParkZone> getZones() { return zones; }
     public DatabaseService getDatabaseService() { return databaseService; }
 }

@@ -4,6 +4,13 @@ import com.axity.dinosaurpark.config.ParkConfig;
 import com.axity.dinosaurpark.event.*;
 import com.axity.dinosaurpark.model.Dinosaur;
 import com.axity.dinosaurpark.model.Vehicle;
+import com.axity.dinosaurpark.zone.ArrivalZone;
+import com.axity.dinosaurpark.zone.DinoEnclosureZone;
+import com.axity.dinosaurpark.zone.ParkZone;
+import com.axity.dinosaurpark.zone.PowerPlantZone;
+import com.axity.dinosaurpark.zone.RestroomZone;
+import com.axity.dinosaurpark.zone.SouvenirShopZone;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +48,11 @@ public class SimulationEngine {
         for (int i = 1; i <= vehicleCount; i++) {
             state.getFleet().add(new Vehicle("V-" + i));
         }
+        state.getZones().add(new ArrivalZone("Z-01", "Muelle de arribo Internacional"));
+        state.getZones().add(new DinoEnclosureZone("Z-02", "Paddock Central de Depredadores"));
+        state.getZones().add(new PowerPlantZone("Z-03", "Planta geotérmica principal"));
+        state.getZones().add(new SouvenirShopZone("Z-04", "Tienda de souvenirs T-Rex"));
+        state.getZones().add(new RestroomZone("Z-05", "Estación de servicios y descanso"));
     }
 
     
@@ -63,26 +75,46 @@ public class SimulationEngine {
 
             //Avanza el tiempo autónomo de los vehículos y dinosaurios
             for (Vehicle vehicle : state.getFleet()) {
+                // Si el vehículo está operativo, simulamos su uso basado en las condiciones del parque
+                if (vehicle.getStatus() != com.axity.dinosaurpark.model.VehicleStatus.BROKEN) {
+                    if (state.isStormActive() || state.isBlackoutActive()) {
+                        // Ante clima hostil o apagón, los vehículos se resguardan en la estación
+                        vehicle.setStatus(com.axity.dinosaurpark.model.VehicleStatus.AVAILABLE);
+                    } else {
+                        // En operación normal, los vehículos salen a campo a pasear turistas de manera aleatoria
+                        if (this.rng.nextDouble() < 0.6) { // 60% de probabilidad de estar en ruta
+                            vehicle.setStatus(com.axity.dinosaurpark.model.VehicleStatus.IN_USE);
+                        } else {
+                            vehicle.setStatus(com.axity.dinosaurpark.model.VehicleStatus.AVAILABLE);
+                        }
+                    }
+                }                
+                // Ejecuta su desgaste interno ordinario (tick)
                 vehicle.tick();
             }
             for (Dinosaur dinosaur : state.getDinosaurs()) {
                 dinosaur.tick();
             }
 
+            //Las zonas procesan su estado 
+            for (ParkZone zone : state.getZones()) {
+                zone.tick(state);
+            }
+
             //Desplega instantánea en el monitor si corresponde al ciclo
             monitor.displaySnapshot(state);
 
-            //Pequeña pausa opcional para poder leer la terminal de forma fluida
+            // Pequeña pausa para poder leer la terminal de forma fluida
             try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         }
 
-        System.out.println("Simulación finalizada con éxito.");
+        System.out.println("Simulación finalizada con éxito");
         
         //Operación de cierre obligatoria al terminar el motor
         try {
             if (state.getDatabaseService().getConnection() != null && !state.getDatabaseService().getConnection().isClosed()) {
                 state.getDatabaseService().getConnection().close();
-                System.out.println("Conexión física con H2 liberada correctamente.");
+                System.out.println("Conexión física con H2 liberada correctamente");
             }
         } catch (SQLException e) {
             System.err.println("Error al cerrar el servicio de base de datos: " + e.getMessage());
