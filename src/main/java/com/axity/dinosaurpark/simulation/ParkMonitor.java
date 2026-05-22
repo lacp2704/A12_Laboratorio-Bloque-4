@@ -24,9 +24,9 @@ public class ParkMonitor {
             System.out.println("\n==================================================");
             System.out.println("MONITOR DEL PARQUE - PASO DEL TIEMPO: " + state.getCurrentStep());
             System.out.println("==================================================");
-            System.out.println("Turistas Activos en el Ecosistema : 125 (Flujo Estimado)");
+            System.out.println("Turistas activos en el ecosistema : " + state.getTotalTourists());
             System.out.println("Dinosaurios bajo Control C6         : " + state.getDinosaurs().size());
-            System.out.println("Nivel de Energía Eléctrica          : " + state.getPowerEnergy() + "%");
+            System.out.println("Nivel de energía eléctrica          : " + state.getPowerEnergy() + "%");
             System.out.println("Vehículos en uso en Campo            : " + vehiclesInUse + " de " + state.getFleet().size());
             
             String eventos = state.getActiveEventsInStep().isEmpty() 

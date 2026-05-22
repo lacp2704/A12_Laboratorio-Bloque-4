@@ -16,14 +16,15 @@ public class ParkState {
     private double powerEnergy;
     private boolean blackoutActive;
     private boolean stormActive;
-    
+    private int totalTourists = 125;
+
     // Listas globales de entidades
     private final List<Vehicle> fleet;
     private final List<Dinosaur> dinosaurs;
     private final List<Worker> workers;
     private final List<String> activeEventsInStep;
     private final List<ParkZone> zones = new ArrayList<>();
-    
+
     private final DatabaseService databaseService;
 
     public ParkState(DatabaseService databaseService) {
@@ -41,7 +42,7 @@ public class ParkState {
     }
 
     /**
-     * Limpia los eventos del paso anterior y restablece las condiciones base 
+     * Limpia los eventos del paso anterior y restablece las condiciones base
      * antes de evaluar el nuevo ciclo de la simulación.
      */
     public void clearActiveEvents() {
@@ -50,32 +51,88 @@ public class ParkState {
         this.currentDiscount = 0.0;
         this.blackoutActive = false;
         this.stormActive = false;
-        // Nota: La energía no se resetea a 100 automáticamente porque depende del consumo/reparación
+        // Nota: La energía no se resetea a 100 automáticamente porque depende del
+        // consumo/reparación
     }
 
     // Getters y Setters
-    public int getCurrentStep() { return currentStep; }
-    public void setCurrentStep(int currentStep) { this.currentStep = currentStep; }
+    public int getCurrentStep() {
+        return currentStep;
+    }
 
-    public boolean isDealsHourActive() { return dealsHourActive; }
-    public void setDealsHourActive(boolean dealsHourActive) { this.dealsHourActive = dealsHourActive; }
-    
-    public double getCurrentDiscount() { return currentDiscount; }
-    public void setCurrentDiscount(double currentDiscount) { this.currentDiscount = currentDiscount; }
+    public void setCurrentStep(int currentStep) {
+        this.currentStep = currentStep;
+    }
 
-    public double getPowerEnergy() { return powerEnergy; }
-    public void setPowerEnergy(double powerEnergy) { this.powerEnergy = powerEnergy; }
+    public boolean isDealsHourActive() {
+        return dealsHourActive;
+    }
 
-    public boolean isBlackoutActive() { return blackoutActive; }
-    public void setBlackoutActive(boolean blackoutActive) { this.blackoutActive = blackoutActive; }
+    public void setDealsHourActive(boolean dealsHourActive) {
+        this.dealsHourActive = dealsHourActive;
+    }
 
-    public boolean isStormActive() { return stormActive; }
-    public void setStormActive(boolean stormActive) { this.stormActive = stormActive; }
+    public double getCurrentDiscount() {
+        return currentDiscount;
+    }
 
-    public List<Vehicle> getFleet() { return fleet; }
-    public List<Dinosaur> getDinosaurs() { return dinosaurs; }
-    public List<Worker> getWorkers() { return workers; }
-    public List<String> getActiveEventsInStep() { return activeEventsInStep; }
-    public List<ParkZone> getZones() { return zones; }
-    public DatabaseService getDatabaseService() { return databaseService; }
+    public void setCurrentDiscount(double currentDiscount) {
+        this.currentDiscount = currentDiscount;
+    }
+
+    public double getPowerEnergy() {
+        return powerEnergy;
+    }
+
+    public void setPowerEnergy(double powerEnergy) {
+        this.powerEnergy = powerEnergy;
+    }
+
+    public boolean isBlackoutActive() {
+        return blackoutActive;
+    }
+
+    public void setBlackoutActive(boolean blackoutActive) {
+        this.blackoutActive = blackoutActive;
+    }
+
+    public boolean isStormActive() {
+        return stormActive;
+    }
+
+    public void setStormActive(boolean stormActive) {
+        this.stormActive = stormActive;
+    }
+
+    public int getTotalTourists() {
+        return totalTourists;
+    }
+
+    public void setTotalTourists(int totalTourists) {
+        this.totalTourists = totalTourists;
+    }
+
+    public List<Vehicle> getFleet() {
+        return fleet;
+    }
+
+    public List<Dinosaur> getDinosaurs() {
+        return dinosaurs;
+    }
+
+    public List<Worker> getWorkers() {
+        return workers;
+    }
+
+    public List<String> getActiveEventsInStep() {
+        return activeEventsInStep;
+    }
+
+    public List<ParkZone> getZones() {
+        return zones;
+    }
+
+    public DatabaseService getDatabaseService() {
+        return databaseService;
+    }
 }
